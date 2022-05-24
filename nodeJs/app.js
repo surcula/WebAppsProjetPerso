@@ -4,6 +4,19 @@ const userController = require("./controller/User")
 const http = require("http")
 const url = require("url")
 
+const getPostData = (req) => {
+    return new Promise((resolve, reject) => {
+        let body = ""
+        req.on("data", data => {
+            body += data
+        })
+        req.on("end", () => {
+            resolve(JSON.parse(body))
+        })
+
+    })
+}
+
 db.sequelize.sync()
     .then(()=>{
         http.createServer((req, res) => {
@@ -12,9 +25,16 @@ db.sequelize.sync()
             const query = currentUrl.query
 
             res.writeHead(200, { "Content-Type": "application/json" })
-
+            
             if (path === "/users" && req.method === "GET") {
                 userController.getAllUsers(res)
+            }
+
+            if (path === "/users" && req.method === "POST") {
+                getPostData(req)
+                    .then((data) => {
+                        userController.insertUser(res,data.national_number,data.first_name,data.last_name,data.email,data.statut,data.birthdate,data.password,data.phone,data.gender,data.civilite,data.roleid,data.addresseid)
+                    })
             }
         })
         .listen(8080)

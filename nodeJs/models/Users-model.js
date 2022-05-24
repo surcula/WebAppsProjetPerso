@@ -2,19 +2,23 @@
 const usersModel = (sequelize, DataTypes) => {
     const Users = sequelize.define('user', {
         national_number : {
-            type :DataTypes.INTEGER,
+            type :DataTypes.STRING.BINARY,
             allowNull:false
         },
-        firstname : {
-            type: DataTypes.STRING,
+        first_name : {
+            type: DataTypes.STRING(90),
             allowNull: false
         },
-        lastname : {
-            type: DataTypes.STRING,
+        last_name : {
+            type: DataTypes.STRING(90),
             allowNull: false
         },
         email : {
             type: DataTypes.STRING,
+            unique : true,
+            validate :{
+                isEmail : true
+            },            
             allowNull: false
         },
         statut : {
@@ -26,11 +30,11 @@ const usersModel = (sequelize, DataTypes) => {
             allowNull: false
         },
         password : {
-            type: DataTypes.STRING.BINARY,
+            type: DataTypes.STRING(64),
             allowNull: false
         },
         phone : {
-            type : DataTypes.INTEGER,
+            type : DataTypes.STRING,
             allowNull : false
         },
         gender : {

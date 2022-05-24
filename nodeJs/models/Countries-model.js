@@ -5,7 +5,7 @@ const countryModel = (sequelize, DataTypes) => {
             allowNull: false
         },
         iso_alpha3 : {
-            type : DataTypes.DECIMAL(3,0),
+            type : DataTypes.STRING,
             allowNull : false
         }
     }, {timestamps: false});

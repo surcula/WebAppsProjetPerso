@@ -13,6 +13,22 @@ const sport_fieldModel = (sequelize, DataTypes) => {
                 model : 'fields',
                 key : 'id'
             }
+        },
+        start_time : {
+            type: DataTypes.DATE,
+            allowNull : false
+        },
+        end_time : {
+            type: DataTypes.DATE,
+            allowNull : false
+        },
+        date_start : {
+            type: DataTypes.DATE,
+            allowNull : false
+        },
+        day_close : {
+            type: DataTypes.INTEGER,
+            allowNull : false
         }
     }, {timestamps: false});
     return Sport_field

@@ -11,7 +11,6 @@ const addresseModel = (sequelize, DataTypes) => {
         },
         box_number : {
             type : DataTypes.DECIMAL(15,2),
-            allowNull : false
         }
     }, {timestamps: false} );
     return Addresse
