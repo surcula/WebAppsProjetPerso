@@ -33,9 +33,42 @@ db.sequelize.sync()
             if (path === "/users" && req.method === "POST") {
                 getPostData(req)
                     .then((data) => {
-                        userController.insertUser(res,data.national_number,data.first_name,data.last_name,data.email,data.statut,data.birthdate,data.password,data.phone,data.gender,data.civilite,data.roleid,data.addresseid)
+                        userController.insertUser(res,data.first_name,data.last_name,data.email,data.statut,data.birthdate,data.password,data.phone,data.gender,data.civilite,data.roleid,data.addresseid)
                     })
             }
+
+            if (path === "/users/checkUser" && req.method === "POST") {
+                getPostData(req)
+                    .then((data) => {
+                        userController.checkUser(res,data.email,data.password)
+                    })
+                    .catch((err) => {
+                        res.write(JSON.stringify({ message: "Erreur " + err }))
+                        res.end()
+                    })
+            }
+
+            if (path === "/users/updateUser" && req.method === "POST") {
+                getPostData(req)
+                    .then((data) => {
+                        userController.updateUser(res,data.id,data.first_name,data.last_name,data.email,data.statut,data.birthdate,data.phone,data.gender,data.civilite,data.addresseid)
+                    })
+                    .catch((err) => {
+                        res.write(JSON.stringify({ message: "Erreur " + err }))
+                        res.end()
+                    })
+            }
+
+            if (path === "/users/updatePassword" && req.method === "POST") {
+                getPostData(req)
+                    .then((data) => {
+                        userController.updatePassword(res,data.id,data.newPassword)
+                    })
+                    .catch((err) => {
+                        res.write(JSON.stringify({ message: "Erreur " + err }))
+                        res.end()
+                    })
+            }            
         })
         .listen(8080)
     })

@@ -17,6 +17,8 @@ const historical_sport_priceModel = require("./Historicals_sports_prices-model")
 const user_subscriptionsModel = require("./Users_subscriptions-model");
 const sport_fieldModel = require("./sports_fields-model");
 const closeModel = require("./closes");
+const eventModel = require("./Events-model");
+
 
 const sequelize = new Sequelize (process.env.DB_NAME,process.env.DB_USER,process.env.DB_PASSWORD,{
     host : process.env.DB_HOST,
@@ -43,7 +45,8 @@ const db = {
     Historicals_sports_prices : historical_sport_priceModel(sequelize,DataTypes),
     User_subscriptions : user_subscriptionsModel(sequelize,DataTypes),
     Sports_fields : sport_fieldModel(sequelize,DataTypes),
-    Closes : closeModel(sequelize,DataTypes)
+    Closes : closeModel(sequelize,DataTypes),
+    Events : eventModel(sequelize,DataTypes)
 }
 
 // Relations many to many
@@ -84,5 +87,8 @@ db.Subscriptions.belongsTo(db.Sports);
 
 db.Closes.hasMany(db.Sports_fields);
 db.Sports_fields.belongsTo(db.Closes);
+
+db.Events.hasMany(db.Users);
+db.Users.belongsTo(db.Events);
 
 module.exports = db;

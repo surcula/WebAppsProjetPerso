@@ -1,10 +1,6 @@
 
 const usersModel = (sequelize, DataTypes) => {
     const Users = sequelize.define('user', {
-        national_number : {
-            type :DataTypes.STRING.BINARY,
-            allowNull:false
-        },
         first_name : {
             type: DataTypes.STRING(90),
             allowNull: false

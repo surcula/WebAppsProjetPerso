@@ -4,9 +4,9 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const userController = {
-    getAllUsers(res) {
-        db.Users.findAll({
-            attributes: {exclude:['password']}
+    async getAllUsers(res) {
+        await db.Users.findAll({
+            attributes: { exclude: ['password'] }
         })
             .then((result) => {
                 res.write(JSON.stringify(result.map(
@@ -19,12 +19,9 @@ const userController = {
                 res.end()
             })
     },
-    insertUser(res, national_number, first_name, last_name, email, statut, birthdate, password, phone, gender, civilite, roleid, addresseid) {
-
+    async insertUser(res, first_name, last_name, email, statut, birthdate, password, phone, gender, civilite, roleid, addresseid) {
         const hashPsw = bcrypt.hashSync(password, saltRounds);
-        const hashNn = bcrypt.hashSync(national_number, saltRounds);
-        db.Users.create({
-            national_number: hashNn, // attention faut crypter
+        await db.Users.create({
             first_name: first_name,
             last_name: last_name,
             email: email,
@@ -38,16 +35,69 @@ const userController = {
             addresseId: addresseid
         })
             .then(() => {
-                res.write(JSON.stringify({ message: "User inserted" }))
-                res.end()
+                res.write(JSON.stringify({ message: "User inserted" }));
+                res.end();
             })
             .catch((err) => {
-                res.write(JSON.stringify({ message: "Erreur"}))
-                res.end()
+                res.write(JSON.stringify({ message: "Erreur" + err }));
+                res.end();
             })
+    },
+    async checkUser(res, email, password) {
+        const user = await db.Users.findOne({ where: { email: email } });
 
-
-
+        if (!user || !bcrypt.compareSync(password, user.password)) {
+            res.json({ message: "0" });
+        } else {
+            const result = await db.Users.findOne({
+                where: { id: 2 },
+                attributes: { exclude: ['password'] },
+                raw: true
+            });
+            res.write(JSON.stringify(result));
+            res.end();
+        }
+    },
+    async updateUser(res, id, first_name, last_name, email, statut, birthdate, phone, gender, civilite, addresseid) {
+        await db.Users.update({
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            statut: statut,
+            birthdate: birthdate,
+            phone: phone,
+            gender: gender,
+            civilite: civilite,
+            addresseId: addresseid
+        },
+            {
+                where: { id: id }
+            })
+            .then(() => {
+                res.write(JSON.stringify({ message: "User updated" }));
+                res.end();
+            })
+            .catch((err) => {
+                res.write(JSON.stringify({ message: err }));
+                res.end();
+            })
+    },
+    async updatePassword(res, id, newPassword) {
+        const hash = bcrypt.hashSync(newPassword, saltRounds);
+        await db.Users.update({
+            password: hash
+        },
+            {
+                where: { id: id }
+            })
+            .then(() => {
+                
+                res.end();
+            })
+            .catch((err) => {
+                res.write(JSON.stringify({ message: "Erreur" }));
+                res.end();
+            })
     }
 }
 
