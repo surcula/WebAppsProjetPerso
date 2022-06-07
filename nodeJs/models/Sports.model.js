@@ -3,10 +3,6 @@ const sportModel = (sequelize, DataTypes) => {
        label : {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        price : {
-            type : DataTypes.DECIMAL(15,2),
-            allowNull : false
         }
     }, {timestamps: false});
     return Sport

@@ -26,7 +26,7 @@ const sport_fieldModel = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull : false
         },
-        day_close : {
+        day : {
             type: DataTypes.INTEGER,
             allowNull : false
         }

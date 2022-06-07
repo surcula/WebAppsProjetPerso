@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const userController = {
-    async getAllUsers(res) {
+    async getAll(res) {
         await db.Users.findAll({
             attributes: { exclude: ['password'] }
         })
@@ -16,6 +16,23 @@ const userController = {
             })
             .catch(() => {
                 res.write(JSON.stringify({ message: "Erreur" }))
+                res.end()
+            })
+    },
+    async getOne(res,id) {
+        await db.Users.findOne(
+            {
+                where: { id:id },
+                attributes: { exclude: ['password'] }
+            }
+        )
+            .then((result) => {
+                res.write(JSON.stringify(result.toJSON()
+                ))
+                res.end()
+            })
+            .catch((err) => {
+                res.write(JSON.stringify({ message: "Erreur " + err }))
                 res.end()
             })
     },
@@ -50,7 +67,7 @@ const userController = {
             res.json({ message: "0" });
         } else {
             const result = await db.Users.findOne({
-                where: { id: 2 },
+                where: { id: user.id },
                 attributes: { exclude: ['password'] },
                 raw: true
             });

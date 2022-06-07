@@ -1,7 +1,7 @@
 const db = require("../models/db")
 
 const hallController = {
-    async insertHall(res,label){
+    async create(res,label){
         await db.Halls.create({
             label:label
         })
@@ -13,7 +13,7 @@ const hallController = {
             res.write(JSON.stringify({message : err}))
         })
     },
-    async updateHall(res,id,label){
+    async update(res,id,label){
         await db.Halls.update({
             label:label
         },{where : {id:id}})
@@ -34,13 +34,22 @@ const hallController = {
             )))
             res.end();
         })
-        .catch(() => {
+        .catch((err) => {
             res.write(JSON.stringify({ message: err }));
             res.end();
         })
     },
     async getOne(res,id){
         await db.Halls.findOne({where:{id:id}})
+        .then((result) => {
+            res.write(JSON.stringify(result.toJSON()
+            ))
+            res.end();
+        })
+        .catch((err) => {
+            res.write(JSON.stringify({ message: err }));
+            res.end();
+        })  
     }
 }
 

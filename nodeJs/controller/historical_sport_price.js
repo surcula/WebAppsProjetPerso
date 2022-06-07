@@ -1,26 +1,27 @@
 const db = require("../models/db")
 
-const fieldController = {
-    async create(res,label,hallId){
-        await db.Fields.create({
-            label:label,
-            hallId:hallId
+const historical_sport_priceController = {
+    async create(res,begin,price,sportId){
+        await db.Historicals_sports_prices.create({
+            begin_date:begin,
+            price : price,
+            sportId:sportId
         })
         .then(()=>{
-            res.write(JSON.stringify({message : "field inserted"}));
+            res.write(JSON.stringify({message : "Historique price inserted"}));
             res.end();
         })
         .catch((err)=>{
             res.write(JSON.stringify({message : err}))
         })
     },
-    async update(res,id,label,hallId){
-        await db.Fields.update({
-            label:label,
-            hallId:hallId
-        },{where : {id:id}})
+    async update(res,begin,price,sportId){
+        await db.Historicals_sports_prices.update({
+            begin_date:begin,
+            price : price,
+        },{where : {sportId:sportId}})
         .then(() => {
-            res.write(JSON.stringify({ message: "hall updated" }));
+            res.write(JSON.stringify({ message: "Historique updated" }));
             res.end();
         })
         .catch((err) => {
@@ -29,7 +30,7 @@ const fieldController = {
         })
     },
     async getAll(res){
-        await db.Fields.findAll()
+        await db.Historicals_sports_prices.findAll()
         .then((result) => {
             res.write(JSON.stringify(result.map(
                 elem => elem.toJSON()
@@ -42,7 +43,7 @@ const fieldController = {
         })
     },
     async getOne(res,id){
-        await db.Fields.findOne({where:{id:id}})
+        await db.Historicals_sports_prices.findOne({where:{id:id}})
         .then((result) => {
             res.write(JSON.stringify(result.toJSON()
             ))
@@ -55,4 +56,4 @@ const fieldController = {
     }
 }
 
-module.exports = fieldController
+module.exports = historical_sport_priceController

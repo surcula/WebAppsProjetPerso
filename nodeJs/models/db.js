@@ -73,20 +73,20 @@ db.Orders.belongsTo(db.Users);
 db.Users.hasMany(db.Reservations);
 db.Reservations.belongsTo(db.Users);
 
-db.Reservations.hasMany(db.Sports_fields);
-db.Sports_fields.belongsTo(db.Reservations);
+db.Sports_fields.hasMany(db.Reservations);
+db.Reservations.belongsTo(db.Sports_fields);
 
-db.Fields.hasMany(db.Halls);
-db.Halls.belongsTo(db.Fields);
+db.Halls.hasMany(db.Fields);
+db.Fields.belongsTo(db.Halls);
 
-db.Historicals_sports_prices.hasMany(db.Sports);
-db.Sports.belongsTo(db.Historicals_sports_prices);
+db.Sports.hasMany(db.Historicals_sports_prices);
+db.Historicals_sports_prices.belongsTo(db.Sports);
 
 db.Sports.hasMany(db.Subscriptions);
 db.Subscriptions.belongsTo(db.Sports);
 
-db.Closes.hasMany(db.Sports_fields);
-db.Sports_fields.belongsTo(db.Closes);
+db.Sports_fields.hasMany(db.Closes);
+db.Closes.belongsTo(db.Sports_fields);
 
 db.Events.hasMany(db.Users);
 db.Users.belongsTo(db.Events);
